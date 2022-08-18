@@ -1,0 +1,68 @@
+driver.get("https://www.google.com.tr/");
+        Robot robot = new Robot();
+
+        String googleId = driver.getWindowHandle();
+
+        for (int i = 0; i < 2; i++) {
+            robot.keyPress(KeyEvent.VK_CONTROL);
+            robot.keyPress(KeyEvent.VK_T);
+            robot.keyRelease(KeyEvent.VK_CONTROL);
+            robot.keyRelease(KeyEvent.VK_T);
+
+        }
+
+        Thread.sleep(1000);
+
+        Set<String> windowIds = driver.getWindowHandles(); // 3 ID vardi
+        ArrayList<String> windowList = new ArrayList<>(); // 2 ID oldu
+
+        for (String window : windowIds) {
+            if (window.equals(googleId)) {
+                continue;
+            }
+
+            driver.switchTo().window(window);
+            windowList.add(window);
+
+        }
+
+        driver.switchTo().window(windowList.get(1));
+        driver.get("https://tr-tr.facebook.com/");
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("email")));
+
+        driver.switchTo().window(windowList.get(0));
+        driver.get("https://twitter.com/home?lang=tr");
+
+        driver.switchTo().window(windowList.get(1));
+        WebElement target1 = driver.findElement(By.xpath("//a[text()='Instagram']"));
+        target1.click();
+
+        Bekle(1);
+
+        driver.switchTo().window(windowList.get(0));
+        WebElement target2button = driver.findElement(By.cssSelector("[class='r-4qtqp9 r-yyyyoo r-z80fyv r-dnmrzs r-bnwqim r-1plcrui r-lrvibr r-19wmn03']"));
+        target2button.click();
+
+        WebElement target2 = wait.until(ExpectedConditions.
+                visibilityOfElementLocated(
+                        By.cssSelector("[href='https://support.twitter.com/articles/20170514']")));
+
+        target2.click();
+
+        Bekle(4);
+
+        windowIds = driver.getWindowHandles();
+
+        for (String window:windowIds) {
+            if (window.equals(googleId)) {
+                continue;
+            }
+            driver.switchTo().window(window);
+            driver.close();
+
+        }
+
+
+
+        BekleKapat()
